@@ -1,0 +1,9 @@
+# Cargo/Rust files
+debug/
+target/
+**/*.rs.bk
+*.pdb
+
+# RedisBloom files
+**/*.rdb
+
