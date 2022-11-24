@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  nginx:
+    # image: web.docker-registry.gewis.nl/pwned-passwords_nginx:latest
+    depends_on:
+      - api
+      - redis
+    networks:
+      - pwned-passwords_network
+    ports:
+      - "9220:8000"
+    restart: unless-stopped
+  api:
+    # image: web.docker-registry.gewis.nl/pwned-passwords_api:latest
+    depends_on:
+      - redis
+    networks:
+      - pwned-passwords_network
+    restart: unless-stopped
+  redis:
+    # image: web.docker-registry.gewis.nl/pwned-passwords_redis:latest
+    networks:
+      - pwned-passwords_network
+    restart: unless-stopped
+
+networks:
+  pwned-passwords_network:
