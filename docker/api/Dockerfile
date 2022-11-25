@@ -1,4 +1,6 @@
 FROM rust:1.65-alpine3.16 AS builder
+RUN apk add --no-cache musl-dev
+
 # Temporary project to build all the dependencies in.
 RUN USER=root cargo new --bin /app
 WORKDIR /app
@@ -17,14 +19,13 @@ RUN cargo build --release --target=x86_64-unknown-linux-musl \
 # Now actually build our own binary, Pwned Passwords Bloom API.
 COPY ./Cargo.toml ./Cargo.toml
 COPY ./Cargo.lock ./Cargo.lock
+COPY ./Rocket.toml ./Rocket.toml
 COPY ./src ./src
 RUN cargo build --release --target=x86_64-unknown-linux-musl
 
-FROM alpine:3.16
+RUN ls -alh ./target
 
-ENV ROCKET_PROFILE="release" \
-    ROCKET_ADDRESS=0.0.0.0 \
-    ROCKET_PORT=8000
+FROM alpine:3.16 AS api
 
 # Ensure that the correct timezone is present.
 RUN apk add --no-cache --virtual .build-deps \
@@ -32,6 +33,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && cp /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime \
     && echo 'Europe/Amsterdam' > /etc/timezone \
     && apk del .build-deps
+
+EXPOSE 8000
 
 WORKDIR /
 COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/pwned-passwords-bloom-api .

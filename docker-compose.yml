@@ -5,7 +5,6 @@ services:
     # image: web.docker-registry.gewis.nl/pwned-passwords_nginx:latest
     depends_on:
       - api
-      - redis
     networks:
       - pwned-passwords_network
     ports:

@@ -9,6 +9,6 @@ RUN apk add --no-cache --virtual .build-deps \
     && echo 'Europe/Amsterdam' > /etc/timezone \
     && apk del .build-deps
 
-COPY --chown=www-data:www-data ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --chown=www-data:www-data ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 
-CMD ["/bin/sh", "-c", "exec nginx -g 'daemon off;"]
+CMD ["/bin/sh", "-c", "exec nginx -g 'daemon off;'"]
