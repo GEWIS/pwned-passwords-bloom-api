@@ -1,4 +1,5 @@
 FROM rust:1.65-alpine3.16 AS builder
+# Needed to build some of the dependencies.
 RUN apk add --no-cache musl-dev
 
 # Temporary project to build all the dependencies in.
@@ -8,6 +9,7 @@ WORKDIR /app
 # We only need the files that actually are needed to get our dependencies.
 COPY ./Cargo.toml ./Cargo.toml
 COPY ./Cargo.lock ./Cargo.lock
+COPY ./Rocket.toml ./Rocket.toml
 
 # Specify that we want to run the project in Alpine.
 RUN rustup target add x86_64-unknown-linux-musl
@@ -16,14 +18,17 @@ RUN rustup target add x86_64-unknown-linux-musl
 RUN cargo build --release --target=x86_64-unknown-linux-musl \
     && find . -not -path "./target*" -delete
 
-# Now actually build our own binary, Pwned Passwords Bloom API.
+# Copy all the files this time.
 COPY ./Cargo.toml ./Cargo.toml
 COPY ./Cargo.lock ./Cargo.lock
 COPY ./Rocket.toml ./Rocket.toml
 COPY ./src ./src
-RUN cargo build --release --target=x86_64-unknown-linux-musl
 
-RUN ls -alh ./target
+# Needed to ensure that we rebuild the binary.
+RUN touch src/main.rs
+
+# Now actually build our own binary, Pwned Passwords Bloom API.
+RUN cargo build --release --target=x86_64-unknown-linux-musl
 
 FROM alpine:3.16 AS api
 

@@ -2,5 +2,5 @@
 address = "0.0.0.0"
 port = 8000
 
-[default.databases.redis]
+[global.databases.redis]
 url = "redis://redis"
