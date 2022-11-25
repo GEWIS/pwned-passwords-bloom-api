@@ -1,6 +1,16 @@
-[production]
-address = "0.0.0.0"
+[default]
 port = 8000
+limits = { data-form = 0, file = 0, form = 0, forms = 0, json = 0, msgpack = 0 }
 
-[global.databases.redis]
+[default.databases.redis]
 url = "redis://redis"
+
+[release]
+address = "0.0.0.0"
+workers = 12
+log_level = "critical"
+
+[debug]
+address = "127.0.0.1"
+workers = 6
+log_level = "normal"

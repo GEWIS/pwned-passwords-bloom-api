@@ -33,15 +33,15 @@ fn index() -> &'static str {
     "Hello, world!"
 }
 
-#[get("/<hash>")]
+#[get("/api/<hash>")]
 async fn pwned(mut redis: Connection<PwnedPasswords>, hash: Hash<'_>) -> String {
-    let value: bool = cmd("BF.EXISTS")
+    let value: u8 = cmd("BF.EXISTS")
         .arg("pwned-bloom")
         .arg(hash.value)
         .query_async(&mut *redis)
         .await.unwrap();
 
-    format!("Hello, {}!", value)
+    format!("{}", value)
 }
 
 #[main]

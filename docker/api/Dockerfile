@@ -9,7 +9,6 @@ WORKDIR /app
 # We only need the files that actually are needed to get our dependencies.
 COPY ./Cargo.toml ./Cargo.toml
 COPY ./Cargo.lock ./Cargo.lock
-COPY ./Rocket.toml ./Rocket.toml
 
 # Specify that we want to run the project in Alpine.
 RUN rustup target add x86_64-unknown-linux-musl
@@ -21,7 +20,6 @@ RUN cargo build --release --target=x86_64-unknown-linux-musl \
 # Copy all the files this time.
 COPY ./Cargo.toml ./Cargo.toml
 COPY ./Cargo.lock ./Cargo.lock
-COPY ./Rocket.toml ./Rocket.toml
 COPY ./src ./src
 
 # Needed to ensure that we rebuild the binary.
@@ -39,9 +37,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && echo 'Europe/Amsterdam' > /etc/timezone \
     && apk del .build-deps
 
-EXPOSE 8000
-
 WORKDIR /
 COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/pwned-passwords-bloom-api .
+COPY ./Rocket.toml ./Rocket.toml
 
 CMD ["./pwned-passwords-bloom-api"]
