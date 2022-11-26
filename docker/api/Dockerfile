@@ -35,10 +35,12 @@ RUN apk add --no-cache --virtual .build-deps \
         tzdata \
     && cp /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime \
     && echo 'Europe/Amsterdam' > /etc/timezone \
-    && apk del .build-deps
+    && apk del .build-deps \
+    && adduser -u 82 -D -S -G www-data www-data
 
 WORKDIR /
-COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/pwned-passwords-bloom-api .
-COPY ./Rocket.toml ./Rocket.toml
+COPY --chown=www-data:www-data --from=builder /app/target/x86_64-unknown-linux-musl/release/pwned-passwords-bloom-api .
+COPY --chown=www-data:www-data ./Rocket.toml ./Rocket.toml
 
+USER www-data
 CMD ["./pwned-passwords-bloom-api"]

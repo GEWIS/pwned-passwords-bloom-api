@@ -1,0 +1,8 @@
+types {
+    text/html                             html htm shtml;
+    text/css                              css;
+    application/x-javascript              js;
+    text/plain                            txt;
+    font/woff                             woff;
+    font/ttf                              ttf;
+}

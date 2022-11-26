@@ -10,5 +10,9 @@ RUN apk add --no-cache --virtual .build-deps \
     && apk del .build-deps
 
 COPY --chown=www-data:www-data ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --chown=www-data:www-data ./docker/nginx/proxy.conf /etc/nginx/proxy.conf
+COPY --chown=www-data:www-data ./docker/nginx/mime.types /etc/nginx/mime.types
+RUN mkdir -p /var/www/html/public
+COPY --chown=www-data:www-data ./public /var/www/html/public
 
 CMD ["/bin/sh", "-c", "exec nginx -g 'daemon off;'"]

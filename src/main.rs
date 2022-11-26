@@ -28,12 +28,7 @@ impl<'r> FromParam<'r> for Hash<'r> {
     }
 }
 
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
-}
-
-#[get("/api/<hash>")]
+#[get("/<hash>")]
 async fn pwned(mut redis: Connection<PwnedPasswords>, hash: Hash<'_>) -> String {
     let value: u8 = cmd("BF.EXISTS")
         .arg("pwned-bloom")
@@ -46,5 +41,5 @@ async fn pwned(mut redis: Connection<PwnedPasswords>, hash: Hash<'_>) -> String 
 
 #[main]
 async fn main() {
-    let _ = build().attach(PwnedPasswords::init()).mount("/", routes![index, pwned]).launch().await;
+    let _ = build().attach(PwnedPasswords::init()).mount("/api", routes![pwned]).launch().await;
 }
