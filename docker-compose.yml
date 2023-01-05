@@ -1,59 +1,59 @@
 version: '3.9'
 
 services:
-  nginx:
-    # image: web.docker-registry.gewis.nl/pwned-passwords_nginx:latest
-    depends_on:
-      - api
-    networks:
-      - pwned-passwords_network
-    ports:
-      - target: 8000
-        published: 9220
-        protocol: tcp
-        mode: ingress
-    deploy:
-      mode: replicated
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
-    restart: unless-stopped
-  api:
-    # image: web.docker-registry.gewis.nl/pwned-passwords_api:latest
-    depends_on:
-      - redis
-    networks:
-      - pwned-passwords_network
-    deploy:
-      mode: replicated
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
-    restart: unless-stopped
-  redis:
-    # image: web.docker-registry.gewis.nl/pwned-passwords_redis:latest
-    networks:
-      - pwned-passwords_network
-    restart: unless-stopped
-    deploy:
-      mode: replicated
-      replicas: 2
-      # Very strictly limit Redis to run only once per node (due to memory usage).
-      placement:
-        max_replicas_per_node: 1
-      update_config:
-        parallelism: 1
-        delay: 20s
-      restart_policy:
-        condition: on-failure
-        # Give the node(s) enough time to reclaim potentially used resources between attempts.
-        delay: 10s
+    nginx:
+        image: web.docker-registry.gewis.nl/pwned-passwords_nginx:latest
+        depends_on:
+            - api
+        networks:
+            - pwned-passwords_network
+        ports:
+            -   target: 8000
+                published: 9250
+                protocol: tcp
+                mode: ingress
+        deploy:
+            mode: replicated
+            replicas: 2
+            update_config:
+                parallelism: 1
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+        restart: unless-stopped
+    api:
+        image: web.docker-registry.gewis.nl/pwned-passwords_api:latest
+        depends_on:
+            - redis
+        networks:
+            - pwned-passwords_network
+        deploy:
+            mode: replicated
+            replicas: 2
+            update_config:
+                parallelism: 1
+                delay: 10s
+            restart_policy:
+                condition: on-failure
+        restart: unless-stopped
+    redis:
+        image: web.docker-registry.gewis.nl/pwned-passwords_redis:latest
+        networks:
+            - pwned-passwords_network
+        restart: unless-stopped
+        deploy:
+            mode: replicated
+            replicas: 2
+            # Very strictly limit Redis to run only once per node (due to memory usage).
+            placement:
+                max_replicas_per_node: 1
+            update_config:
+                parallelism: 1
+                delay: 20s
+            restart_policy:
+                condition: on-failure
+                # Give the node(s) enough time to reclaim potentially used resources between attempts.
+                delay: 10s
 
 networks:
-  pwned-passwords_network:
+    pwned-passwords_network:

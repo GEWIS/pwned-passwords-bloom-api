@@ -1,34 +1,34 @@
 version: '3.9'
 
 services:
-  nginx:
-    # image: web.docker-registry.gewis.nl/pwned-passwords_nginx:latest
-    build:
-      dockerfile: docker/nginx/Dockerfile
-      context: .
-    depends_on:
-      - api
-      - redis
-    networks:
-      - pwned-passwords_network
-    ports:
-      - "80:8000"
-    restart: unless-stopped
-  api:
-    # image: web.docker-registry.gewis.nl/pwned-passwords_api:latest
-    build:
-      dockerfile: docker/api/Dockerfile
-      context: .
-    depends_on:
-      - redis
-    networks:
-      - pwned-passwords_network
-    restart: unless-stopped
-  redis:
-    # image: web.docker-registry.gewis.nl/pwned-passwords_redis:latest
-    build:
-      dockerfile: docker/redis/Dockerfile
-      context: .
-    networks:
-      - pwned-passwords_network
-    restart: unless-stopped
+    nginx:
+        image: web.docker-registry.gewis.nl/pwned-passwords_nginx:latest
+        build:
+            dockerfile: docker/nginx/Dockerfile
+            context: .
+        depends_on:
+            - api
+            - redis
+        networks:
+            - pwned-passwords_network
+        ports:
+            - "80:8000"
+        restart: unless-stopped
+    api:
+        image: web.docker-registry.gewis.nl/pwned-passwords_api:latest
+        build:
+            dockerfile: docker/api/Dockerfile
+            context: .
+        depends_on:
+            - redis
+        networks:
+            - pwned-passwords_network
+        restart: unless-stopped
+    redis:
+        image: web.docker-registry.gewis.nl/pwned-passwords_redis:latest
+        build:
+            dockerfile: docker/redis/Dockerfile
+            context: .
+        networks:
+            - pwned-passwords_network
+        restart: unless-stopped
