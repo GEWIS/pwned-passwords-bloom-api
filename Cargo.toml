@@ -1,10 +1,10 @@
 [package]
 name = "pwned-passwords-bloom-api"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 
 [dependencies]
-rocket = { version = "0.5.0", default-features = false }
-rocket_db_pools = { version = "0.1.0", features = ["deadpool_redis"], default-features = false }
-deadpool-redis = { version = "0.13.0" }
-deadpool = { version = "0.10.0" }
+rocket = { version = "0.5.1", default-features = false }
+rocket_db_pools = { version = "0.2.0", features = ["deadpool_redis"], default-features = false }
+deadpool-redis = { version = "0.15.1" }
+deadpool = { version = "0.12.1" }

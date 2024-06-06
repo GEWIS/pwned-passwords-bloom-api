@@ -1,0 +1,8 @@
+[package]
+name = "pwned-passwords-bloom-generator"
+version = "0.0.1"
+edition = "2021"
+
+[dependencies]
+rustis = { version = "0.13.3", features = ["redis-bloom"] }
+tokio = { version = "1.38.0", features = ["rt-multi-thread"] }

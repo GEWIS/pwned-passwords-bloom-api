@@ -1,5 +1,5 @@
-FROM redislabs/rebloom:2.6.8 as rebloom
-FROM redis:7.2-alpine3.18
+FROM redislabs/rebloom:2.8.1 as rebloom
+FROM redis:7.2-alpine3.20
 
 # Ensure that the correct timezone is present.
 RUN apk add --no-cache --virtual .build-deps \
