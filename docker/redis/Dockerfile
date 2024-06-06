@@ -1,17 +1,6 @@
-FROM redislabs/rebloom:2.8.1 as rebloom
-FROM redis:7.2-alpine3.20
-
-# Ensure that the correct timezone is present.
-RUN apk add --no-cache --virtual .build-deps \
-        tzdata \
-    && cp /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime \
-    && echo 'Europe/Amsterdam' > /etc/timezone \
-    && apk del .build-deps
-
-# Copy the RedisBloom library from the `rebloom` image to our own image.
-COPY --from=rebloom /usr/lib/redis/modules/redisbloom.so /usr/lib/redis/modules/redisbloom.so
+FROM redis/redis-stack-server:7.2.0-v10
 
 # Copy the last database dump.
 COPY ./data/dump.rdb /data/dump.rdb
 
-CMD ["redis-server", "--loadmodule", "/usr/lib/redis/modules/redisbloom.so"]
+CMD ["/entrypoint.sh"]

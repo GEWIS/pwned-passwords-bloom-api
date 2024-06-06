@@ -41,6 +41,8 @@ services:
         networks:
             - pwned-passwords_network
         restart: unless-stopped
+        healthcheck:
+            test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
         deploy:
             mode: replicated
             replicas: 2
