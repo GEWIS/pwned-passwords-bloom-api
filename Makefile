@@ -8,24 +8,24 @@ all: build login push
 build: buildapi buildnginx buildredis
 
 buildapi:
-	@docker build -t web.docker-registry.gewis.nl/pwned-passwords_api:latest -f docker/api/Dockerfile .
+	@docker build -t abc.docker-registry.gewis.nl/web/pwned-passwords/api:latest -f docker/api/Dockerfile .
 
 buildnginx:
-	@docker build -t web.docker-registry.gewis.nl/pwned-passwords_nginx:latest -f docker/nginx/Dockerfile .
+	@docker build -t abc.docker-registry.gewis.nl/web/pwned-passwords/nginx:latest -f docker/nginx/Dockerfile .
 
 buildredis:
-	@docker build -t web.docker-registry.gewis.nl/pwned-passwords_redis:latest -f docker/redis/Dockerfile .
+	@docker build -t abc.docker-registry.gewis.nl/web/pwned-passwords/redis:latest -f docker/redis/Dockerfile .
 
 login:
-	@docker login web.docker-registry.gewis.nl
+	@docker login abc.docker-registry.gewis.nl
 
 push: pushapi pushnginx pushredis
 
 pushapi:
-	@docker push web.docker-registry.gewis.nl/pwned-passwords_api:latest
+	@docker push abc.docker-registry.gewis.nl/web/pwned-passwords/api:latest
 
 pushnginx:
-	@docker push web.docker-registry.gewis.nl/pwned-passwords_nginx:latest
+	@docker push abc.docker-registry.gewis.nl/web/pwned-passwords/nginx:latest
 
 pushredis:
-	@docker push web.docker-registry.gewis.nl/pwned-passwords_redis:latest
+	@docker push abc.docker-registry.gewis.nl/web/pwned-passwords/redis:latest

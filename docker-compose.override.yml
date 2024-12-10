@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
     nginx:
-        image: web.docker-registry.gewis.nl/pwned-passwords_nginx:latest
+        image: abc.docker-registry.gewis.nl/web/pwned-passwords/nginx:latest
         build:
             dockerfile: docker/nginx/Dockerfile
             context: .
@@ -15,7 +15,7 @@ services:
             - "80:8000"
         restart: unless-stopped
     api:
-        image: web.docker-registry.gewis.nl/pwned-passwords_api:latest
+        image: abc.docker-registry.gewis.nl/web/pwned-passwords/api:latest
         build:
             dockerfile: docker/api/Dockerfile
             context: .
@@ -25,7 +25,7 @@ services:
             - pwned-passwords_network
         restart: unless-stopped
     redis:
-        image: web.docker-registry.gewis.nl/pwned-passwords_redis:latest
+        image: abc.docker-registry.gewis.nl/web/pwned-passwords/redis:latest
         build:
             dockerfile: docker/redis/Dockerfile
             context: .
