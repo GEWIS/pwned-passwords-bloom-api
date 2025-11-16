@@ -40,6 +40,7 @@ RUN apk add --no-cache --virtual .build-deps \
 
 WORKDIR /
 COPY --chown=www-data:www-data --from=builder /app/target/x86_64-unknown-linux-musl/release/pwned-passwords-bloom-api .
+COPY --chown=www-data:www-data ./public /public
 COPY --chown=www-data:www-data ./Rocket.toml ./Rocket.toml
 
 USER www-data

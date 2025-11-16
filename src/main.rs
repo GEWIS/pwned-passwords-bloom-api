@@ -2,6 +2,7 @@ use rocket_db_pools::{Connection, Database};
 use rocket_db_pools::deadpool_redis::Pool;
 use rocket_db_pools::deadpool_redis::redis::cmd;
 use rocket::{build, get, main, routes};
+use rocket::fs::FileServer;
 use rocket::request::FromParam;
 
 #[derive(Database)]
@@ -41,5 +42,10 @@ async fn pwned(mut redis: Connection<PwnedPasswords>, hash: Hash<'_>) -> String 
 
 #[main]
 async fn main() {
-    let _ = build().attach(PwnedPasswords::init()).mount("/api", routes![pwned]).launch().await;
+    let _ = build()
+        .attach(PwnedPasswords::init())
+        .mount("/api", routes![pwned])
+        .mount("/", FileServer::from("public"))
+        .launch()
+        .await;
 }
